@@ -1,2 +1,0 @@
-# CafeConnect
-Repository for Greta
