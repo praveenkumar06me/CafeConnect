@@ -3,6 +3,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Landing from './pages/Landing';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
 import About from './pages/About';
@@ -12,30 +13,45 @@ import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Welcome from './pages/Welcome';
+import { useAuth } from './contexts/AuthContext';
+
+const PrivateRoute = ({ children }) => {
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/login" />;
+};
+
+const AppContent = () => {
+  const { user } = useAuth();
+  
+  return (
+    <div className="min-h-screen flex flex-col">
+      {user && <Navbar />}
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={!user ? <Landing /> : <Navigate to="/home" />} />
+          <Route path="/login" element={!user ? <Login /> : <Navigate to="/home" />} />
+          <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
+          <Route path="/menu" element={<PrivateRoute><Menu /></PrivateRoute>} />
+          <Route path="/about" element={<PrivateRoute><About /></PrivateRoute>} />
+          <Route path="/location" element={<PrivateRoute><Location /></PrivateRoute>} />
+          <Route path="/events" element={<PrivateRoute><Events /></PrivateRoute>} />
+          <Route path="/gallery" element={<PrivateRoute><Gallery /></PrivateRoute>} />
+          <Route path="/contact" element={<PrivateRoute><Contact /></PrivateRoute>} />
+          <Route path="/welcome" element={<PrivateRoute><Welcome /></PrivateRoute>} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+      {user && <Footer />}
+    </div>
+  );
+};
 
 function App() {
   return (
     <AuthProvider>
       <CartProvider>
         <Router>
-          <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <main className="flex-grow">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/menu" element={<Menu />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/location" element={<Location />} />
-                <Route path="/events" element={<Events />} />
-                <Route path="/gallery" element={<Gallery />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/welcome" element={<Welcome />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
+          <AppContent />
         </Router>
       </CartProvider>
     </AuthProvider>

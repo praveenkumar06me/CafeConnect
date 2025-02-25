@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { FaCoffee } from 'react-icons/fa';
 
 const Login = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -14,13 +15,13 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
-    if (!email || !password) {
+
+    if (!name || !email || !password) {
       setError('Please fill in all fields');
       return;
     }
 
-    const success = await login(email, password);
+    const success = await login(email, password, name);
     if (success) {
       navigate('/welcome');
     } else {
@@ -72,8 +73,21 @@ const Login = () => {
               {error}
             </motion.div>
           )}
-          
+
           <div className="space-y-4">
+            <div>
+              <label htmlFor="name" className="text-sm font-medium text-brown-700">
+                Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="mt-1 w-full px-4 py-2 border border-brown-300 rounded-md focus:ring-2 focus:ring-brown-500 focus:border-transparent"
+                placeholder="Enter your name"
+              />
+            </div>
             <div>
               <label htmlFor="email" className="text-sm font-medium text-brown-700">
                 Email
@@ -87,7 +101,6 @@ const Login = () => {
                 placeholder="Enter your email"
               />
             </div>
-            
             <div>
               <label htmlFor="password" className="text-sm font-medium text-brown-700">
                 Password

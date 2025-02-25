@@ -1,18 +1,22 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
   const [loading, setLoading] = useState(false);
 
-  const login = async (email, password) => {
+  const login = async (email, password, name) => {
     setLoading(true);
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      setUser({ email, name: email.split('@')[0] });
-      localStorage.setItem('user', JSON.stringify({ email }));
+      const userData = { email, name };
+      setUser(userData);
+      localStorage.setItem('user', JSON.stringify(userData));
       return true;
     } catch (error) {
       console.error('Login error:', error);
@@ -26,6 +30,13 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem('user');
   };
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
 
   const value = {
     user,
