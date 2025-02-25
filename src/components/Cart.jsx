@@ -34,29 +34,21 @@ const Cart = () => {
     });
   };
 
-  const handleCloseSuccess = () => {
-    clearCart();
-    setIsCartOpen(false);
-    setOrderPlaced(false);
-    setIsCheckingOut(false);
-    setCheckoutForm({
-      name: '',
-      address: ''
-    });
-  };
-
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
     setOrderPlaced(true);
-    // Auto close after 5 seconds unless user closes it manually
     setTimeout(() => {
-      if (orderPlaced) {
-        handleCloseSuccess();
-      }
-    }, 5000);
+      clearCart();
+      setIsCartOpen(false);
+      setOrderPlaced(false);
+      setIsCheckingOut(false);
+      setCheckoutForm({
+        name: '',
+        address: ''
+      });
+    }, 2000);
   };
 
-  // Rest of the component remains the same until the orderPlaced section
   return (
     <AnimatePresence>
       {isCartOpen && (
@@ -86,22 +78,154 @@ const Cart = () => {
                 </button>
               </div>
 
-              {/* ... Rest of the cart content remains the same ... */}
+              {cart.length === 0 ? (
+                <div className="flex-1 flex items-center justify-center">
+                  <p className="text-brown-600">Your cart is empty</p>
+                </div>
+              ) : (
+                <>
+                  <div className="flex-1 overflow-y-auto">
+                    {cart.map((item) => (
+                      <div
+                        key={item.name}
+                        className="flex items-center justify-between py-4 border-b border-brown-100"
+                      >
+                        <div className="flex-1">
+                          <h3 className="text-lg font-medium text-brown-900">{item.name}</h3>
+                          <p className="text-brown-600">{item.price}</p>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <button
+                            onClick={() => updateQuantity(item.name, item.quantity - 1)}
+                            className="text-brown-600 hover:text-brown-900"
+                          >
+                            <FaMinus size={14} />
+                          </button>
+                          <span className="text-brown-900 w-8 text-center">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.name, item.quantity + 1)}
+                            className="text-brown-600 hover:text-brown-900"
+                          >
+                            <FaPlus size={14} />
+                          </button>
+                          <button
+                            onClick={() => removeFromCart(item.name)}
+                            className="text-red-500 hover:text-red-700 ml-4"
+                          >
+                            <FaTimes size={18} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 space-y-4">
+                    <div className="flex justify-between font-semibold text-brown-900 pt-4 border-t">
+                      <span>Total:</span>
+                      <span>₹{getTotalPrice().toFixed(2)}</span>
+                    </div>
+
+                    {isCheckingOut ? (
+                      <form onSubmit={handlePlaceOrder} className="space-y-4">
+                        <div className="space-y-4">
+                          <div>
+                            <label className="flex items-center text-sm font-medium text-brown-700 mb-1">
+                              <FaUser className="mr-2" /> Name
+                            </label>
+                            <input
+                              type="text"
+                              name="name"
+                              required
+                              value={checkoutForm.name}
+                              onChange={handleInputChange}
+                              className="w-full px-4 py-2 border border-brown-300 rounded-md focus:ring-2 focus:ring-brown-500 focus:border-transparent"
+                              placeholder="Enter your name"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="flex items-center text-sm font-medium text-brown-700 mb-1">
+                              <FaMapMarkerAlt className="mr-2" /> Delivery Address
+                            </label>
+                            <textarea
+                              name="address"
+                              required
+                              value={checkoutForm.address}
+                              onChange={handleInputChange}
+                              className="w-full px-4 py-2 border border-brown-300 rounded-md focus:ring-2 focus:ring-brown-500 focus:border-transparent"
+                              placeholder="Enter your delivery address"
+                              rows="2"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex gap-3">
+                          <button
+                            type="submit"
+                            className="flex-1 py-3 px-4 bg-brown-900 text-white rounded-full hover:bg-brown-800 transition-colors flex items-center justify-center"
+                          >
+                            <FaLock className="mr-2" size={14} />
+                            Place Order (₹{getTotalPrice().toFixed(2)})
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleCancelOrder}
+                            className="px-4 py-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
+                    ) : (
+                      <button
+                        onClick={() => setIsCheckingOut(true)}
+                        className="w-full py-3 px-4 bg-brown-900 text-white rounded-full hover:bg-brown-800 transition-colors"
+                      >
+                        Checkout
+                      </button>
+                    )}
+                  </div>
+                </>
+              )}
+
+              {showCancelConfirm && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center p-6"
+                >
+                  <motion.div
+                    initial={{ scale: 0.9 }}
+                    animate={{ scale: 1 }}
+                    className="bg-white rounded-lg p-6 max-w-sm w-full"
+                  >
+                    <h3 className="text-xl font-semibold text-brown-900 mb-4">Cancel Order?</h3>
+                    <p className="text-brown-600 mb-6">Are you sure you want to cancel your order? Your cart items will be preserved.</p>
+                    <div className="flex gap-3">
+                      <button
+                        onClick={confirmCancelOrder}
+                        className="flex-1 px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                      >
+                        Yes, Cancel
+                      </button>
+                      <button
+                        onClick={() => setShowCancelConfirm(false)}
+                        className="flex-1 px-4 py-2 bg-brown-900 text-white rounded-full hover:bg-brown-800 transition-colors"
+                      >
+                        No, Keep Order
+                      </button>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
 
               {orderPlaced && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="absolute inset-0 bg-white flex items-center justify-center"
-                  onClick={(e) => e.stopPropagation()}
                 >
                   <div className="text-center p-6">
-                    <button
-                      onClick={handleCloseSuccess}
-                      className="absolute top-4 right-4 text-brown-500 hover:text-brown-700"
-                    >
-                      <FaTimes size={24} />
-                    </button>
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: [0, 1.2, 1] }}
@@ -133,46 +257,7 @@ const Cart = () => {
                     >
                       Thank you for your order. We'll start preparing it right away!
                     </motion.p>
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.5 }}
-                      className="text-sm text-brown-400 mt-4"
-                    >
-                      This message will close automatically in 5 seconds
-                    </motion.p>
                   </div>
-                </motion.div>
-              )}
-
-              {showCancelConfirm && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center p-6"
-                >
-                  <motion.div
-                    initial={{ scale: 0.9 }}
-                    animate={{ scale: 1 }}
-                    className="bg-white rounded-lg p-6 max-w-sm w-full"
-                  >
-                    <h3 className="text-xl font-semibold text-brown-900 mb-4">Cancel Order?</h3>
-                    <p className="text-brown-600 mb-6">Are you sure you want to cancel your order? Your cart items will be preserved.</p>
-                    <div className="flex gap-3">
-                      <button
-                        onClick={confirmCancelOrder}
-                        className="flex-1 px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-                      >
-                        Yes, Cancel
-                      </button>
-                      <button
-                        onClick={() => setShowCancelConfirm(false)}
-                        className="flex-1 px-4 py-2 bg-brown-900 text-white rounded-full hover:bg-brown-800 transition-colors"
-                      >
-                        No, Keep Order
-                      </button>
-                    </div>
-                  </motion.div>
                 </motion.div>
               )}
             </div>
