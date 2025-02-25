@@ -36,7 +36,7 @@ export const CartProvider = ({ children }) => {
 
   const getTotalPrice = () => {
     return cart.reduce((total, item) => {
-      const price = parseFloat(item.price.replace('$', ''));
+      const price = parseFloat(item.price.replace('₹', ''));
       return total + price * item.quantity;
     }, 0);
   };
@@ -46,16 +46,18 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{
-      cart,
-      isCartOpen,
-      setIsCartOpen,
-      addToCart,
-      removeFromCart,
-      updateQuantity,
-      getTotalPrice,
-      clearCart
-    }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        isCartOpen,
+        setIsCartOpen,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        getTotalPrice,
+        clearCart
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

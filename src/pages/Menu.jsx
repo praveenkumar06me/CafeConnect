@@ -7,25 +7,25 @@ const menuItems = {
   coffee: [
     {
       name: 'Espresso',
-      price: '$3.50',
+      price: '₹180',
       description: 'Rich and bold single shot',
       image: 'https://images.unsplash.com/photo-1610889556528-9a770e32642f?w=500&h=400&fit=crop'
     },
     {
       name: 'Cappuccino',
-      price: '$4.50',
+      price: '₹220',
       description: 'Espresso with steamed milk and foam',
       image: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=500&h=400&fit=crop'
     },
     {
       name: 'Latte',
-      price: '$4.75',
+      price: '₹240',
       description: 'Espresso with steamed milk',
       image: 'https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=500&h=400&fit=crop'
     },
     {
       name: 'Americano',
-      price: '$3.75',
+      price: '₹190',
       description: 'Espresso with hot water',
       image: 'https://images.unsplash.com/photo-1551030173-122aabc4489c?w=500&h=400&fit=crop'
     }
@@ -33,25 +33,25 @@ const menuItems = {
   pastries: [
     {
       name: 'Croissant',
-      price: '$3.50',
+      price: '₹180',
       description: 'Buttery, flaky pastry',
       image: 'https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?w=500&h=400&fit=crop'
     },
     {
       name: 'Muffin',
-      price: '$3.25',
+      price: '₹160',
       description: 'Daily baked assorted flavors',
       image: 'https://images.unsplash.com/photo-1607958996333-41aef7caefaa?w=500&h=400&fit=crop'
     },
     {
       name: 'Danish',
-      price: '$3.75',
+      price: '₹190',
       description: 'Fruit-filled pastry',
       image: 'https://images.unsplash.com/photo-1609198092458-38a293c7ac4b?w=500&h=400&fit=crop'
     },
     {
       name: 'Scone',
-      price: '$3.25',
+      price: '₹160',
       description: 'Traditional butter scone',
       image: 'https://images.unsplash.com/photo-1597403491447-3ab08f8e44dc?w=500&h=400&fit=crop'
     }
@@ -59,19 +59,19 @@ const menuItems = {
   breakfast: [
     {
       name: 'Vegan Breakfast Bowl',
-      price: '$8.50',
+      price: '₹420',
       description: 'Quinoa, roasted vegetables, avocado, and tofu scramble',
       image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500&h=400&fit=crop'
     },
     {
       name: 'Oatmeal Bowl',
-      price: '$6.50',
+      price: '₹320',
       description: 'Steel-cut oats with toppings',
       image: 'https://images.unsplash.com/photo-1586511925558-a4c6376fe65f?w=500&h=400&fit=crop'
     },
     {
       name: 'Yogurt Parfait',
-      price: '$6.75',
+      price: '₹340',
       description: 'Greek yogurt with granola and berries',
       image: 'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=500&h=400&fit=crop'
     }
@@ -131,11 +131,7 @@ const Menu = () => {
                 >
                   <div className="flex h-48">
                     <div className="w-1/2">
-                      <img 
-                        src={item.image} 
-                        alt={item.name}
-                        className="w-full h-full object-cover"
-                      />
+                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="w-1/2 p-4 flex flex-col justify-between">
                       <div>

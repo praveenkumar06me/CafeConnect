@@ -39,9 +39,7 @@ const Gallery = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
+      transition: { staggerChildren: 0.2 }
     }
   };
 
@@ -50,20 +48,7 @@ const Gallery = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.5
-      }
-    }
-  };
-
-  const hoverVariants = {
-    rest: { scale: 1 },
-    hover: { 
-      scale: 1.05,
-      transition: {
-        duration: 0.3,
-        ease: "easeInOut"
-      }
+      transition: { duration: 0.5 }
     }
   };
 
@@ -89,10 +74,8 @@ const Gallery = () => {
             <motion.div
               key={index}
               variants={itemVariants}
-              whileHover="hover"
-              initial="rest"
-              variants={hoverVariants}
               className="group relative overflow-hidden rounded-lg shadow-lg cursor-pointer"
+              whileHover={{ scale: 1.02 }}
             >
               <motion.img
                 src={image.url}

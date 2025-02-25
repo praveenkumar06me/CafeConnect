@@ -30,37 +30,34 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brown-100 to-brown-300 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brown-100 to-brown-300 p-4 sm:p-6 md:p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-2xl"
+        className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 sm:p-8 md:p-10"
       >
         <div className="text-center">
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2 }}
-            className="mx-auto h-16 w-16 bg-brown-900 rounded-full flex items-center justify-center"
+            className="mx-auto h-16 w-16 sm:h-20 sm:w-20 bg-brown-900 rounded-full flex items-center justify-center"
           >
-            <FaCoffee className="h-8 w-8 text-white" />
+            <FaCoffee className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
           </motion.div>
-          <motion.h2
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="mt-6 text-3xl font-bold text-brown-900"
+            className="mt-6 space-y-2"
           >
-            Welcome to The Backbencher's
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="mt-2 text-sm text-brown-600"
-          >
-            "Life is like coffee, it's all about how you make it."
-          </motion.p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-brown-900">
+              Welcome to The Backbencher's
+            </h2>
+            <p className="text-sm sm:text-base text-brown-600">
+              "Life is like coffee, it's all about how you make it."
+            </p>
+          </motion.div>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -68,7 +65,7 @@ const Login = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-red-500 text-center text-sm"
+              className="bg-red-50 text-red-500 text-center text-sm p-3 rounded-lg"
             >
               {error}
             </motion.div>
@@ -76,55 +73,73 @@ const Login = () => {
 
           <div className="space-y-4">
             <div>
-              <label htmlFor="name" className="text-sm font-medium text-brown-700">
+              <label htmlFor="name" className="block text-sm font-medium text-brown-700 mb-1">
                 Name
               </label>
-              <input
+              <motion.input
+                whileFocus={{ scale: 1.01 }}
                 id="name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="mt-1 w-full px-4 py-2 border border-brown-300 rounded-md focus:ring-2 focus:ring-brown-500 focus:border-transparent"
+                className="w-full px-4 py-2.5 border border-brown-300 rounded-lg focus:ring-2 focus:ring-brown-500 focus:border-transparent transition-all duration-200"
                 placeholder="Enter your name"
               />
             </div>
+
             <div>
-              <label htmlFor="email" className="text-sm font-medium text-brown-700">
+              <label htmlFor="email" className="block text-sm font-medium text-brown-700 mb-1">
                 Email
               </label>
-              <input
+              <motion.input
+                whileFocus={{ scale: 1.01 }}
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 w-full px-4 py-2 border border-brown-300 rounded-md focus:ring-2 focus:ring-brown-500 focus:border-transparent"
+                className="w-full px-4 py-2.5 border border-brown-300 rounded-lg focus:ring-2 focus:ring-brown-500 focus:border-transparent transition-all duration-200"
                 placeholder="Enter your email"
               />
             </div>
+
             <div>
-              <label htmlFor="password" className="text-sm font-medium text-brown-700">
+              <label htmlFor="password" className="block text-sm font-medium text-brown-700 mb-1">
                 Password
               </label>
-              <input
+              <motion.input
+                whileFocus={{ scale: 1.01 }}
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 w-full px-4 py-2 border border-brown-300 rounded-md focus:ring-2 focus:ring-brown-500 focus:border-transparent"
+                className="w-full px-4 py-2.5 border border-brown-300 rounded-lg focus:ring-2 focus:ring-brown-500 focus:border-transparent transition-all duration-200"
                 placeholder="Enter your password"
               />
             </div>
           </div>
 
-          <button
+          <motion.button
             type="submit"
             disabled={loading}
-            className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-white bg-brown-900 hover:bg-brown-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown-500 ${
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-brown-900 hover:bg-brown-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown-500 transition-all duration-200 text-base sm:text-lg font-medium ${
               loading ? 'opacity-75 cursor-not-allowed' : ''
             }`}
           >
-            {loading ? 'Signing in...' : 'Sign in'}
-          </button>
+            {loading ? (
+              <div className="flex items-center space-x-2">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                />
+                <span>Signing in...</span>
+              </div>
+            ) : (
+              'Sign in'
+            )}
+          </motion.button>
         </form>
       </motion.div>
     </div>
