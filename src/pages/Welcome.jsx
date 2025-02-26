@@ -7,10 +7,10 @@ const Welcome = () => {
   const navigate = useNavigate();
 
   const quotes = [
-    "Coffee: because adulting is hard.",
+    "Coffee: because every great day starts here.",
     "Life happens, coffee helps.",
     "Behind every successful person is a substantial amount of coffee.",
-    "May your coffee be strong and your Monday be short.",
+    "The perfect moment starts with the perfect brew."
   ];
 
   return (
@@ -28,7 +28,6 @@ const Welcome = () => {
         >
           Welcome, {user?.name}!
         </motion.h1>
-
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -37,7 +36,6 @@ const Welcome = () => {
         >
           {quotes[Math.floor(Math.random() * quotes.length)]}
         </motion.p>
-
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -47,7 +45,6 @@ const Welcome = () => {
           <p className="text-brown-600">
             We're excited to have you here at The Backbencher's. Get ready to experience the perfect blend of comfort and taste.
           </p>
-          
           <button
             onClick={() => navigate('/')}
             className="mt-8 inline-flex justify-center py-3 px-6 border border-transparent rounded-md shadow-sm text-white bg-brown-900 hover:bg-brown-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown-500"
